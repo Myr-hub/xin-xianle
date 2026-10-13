@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {makeView} from './example.mjs';
+const games=[{id:'hongzhong',name:'红中麻将'}];
+const a=makeView(games,'night'),b=makeView(games,'city');
+assert.deepEqual(a.items,b.items);
+assert.notDeepEqual(a.theme,b.theme);
+assert.deepEqual(makeView(games,'missing').theme,a.theme);
+b.items[0].name='更改';assert.equal(games[0].name,'红中麻将');
+a.theme.accent='red';assert.notEqual(makeView(games,'night').theme.accent,'red');
+assert.throws(()=>makeView([...games,...games],'night'),/重复/);
+assert.throws(()=>makeView([{id:'x'}],'night'),TypeError);
+console.log('7 assertions passed');
